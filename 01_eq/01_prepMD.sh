@@ -12,8 +12,8 @@ EOS
 inputPDBName=$1 
 proteinName=${inputPDBName%.*}
 
-CENTER="0.0 0.0 0.0"
-BOX="10.0 10.0 10.0"
+CENTER="1.5 1.5 1.5"
+BOX="5.0 3.0 3.0"
 
 gmx pdb2gmx -f ${inputPDBName} -o ${proteinName}_processed.gro -water tip3p
 
@@ -21,6 +21,7 @@ gmx pdb2gmx -f ${inputPDBName} -o ${proteinName}_processed.gro -water tip3p
 gmx editconf -f ${proteinName}_processed.gro \
              -o ${proteinName}_newbox.gro \
              -center $CENTER \
+             -princ \
              -box $BOX
 
 gmx solvate -cp ${proteinName}_newbox.gro \
@@ -45,13 +46,12 @@ gmx grompp -f templates/em1.mdp \
            -r ${proteinName}_solv_ions.gro \
            -p topol.top \
            -o em1.tpr 
-gmx mdrun -deffnm em1 #-ntmpi 1 -ntomp 6
+gmx mdrun -deffnm em1 
 
 echo "Energy minimisation 2 ..."
 gmx grompp -f templates/em2.mdp \
            -c em1.gro \
            -p topol.top \
            -o em2.tpr 
-gmx mdrun -deffnm em2 #-ntmpi 1 -ntomp 6
+gmx mdrun -deffnm em2
 
-exit
