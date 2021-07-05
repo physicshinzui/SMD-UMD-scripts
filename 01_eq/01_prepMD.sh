@@ -40,7 +40,7 @@ echo "SOL" | gmx genion -s ions.tpr \
                         -neutral -conc 0.1
 
 echo "Energy minimisation 1 ..."
-gmx grompp -f templates/template_em1.mdp \
+gmx grompp -f templates/em1.mdp \
            -c ${proteinName}_solv_ions.gro \
            -r ${proteinName}_solv_ions.gro \
            -p topol.top \
@@ -48,7 +48,7 @@ gmx grompp -f templates/template_em1.mdp \
 gmx mdrun -deffnm em1 #-ntmpi 1 -ntomp 6
 
 echo "Energy minimisation 2 ..."
-gmx grompp -f templates/template_em2.mdp \
+gmx grompp -f templates/em2.mdp \
            -c em1.gro \
            -p topol.top \
            -o em2.tpr 
