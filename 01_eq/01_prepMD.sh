@@ -9,13 +9,16 @@ This is for umbrella sampling.
     Usage:
         bash ${0} [PDB file]
 EOS
+
+export PATH=/Users/siida/opt/gmaps/build/bin:$PATH
+
 inputPDBName=$1 
 proteinName=${inputPDBName%.*}
 
 CENTER="1.5 1.5 1.5"
 BOX="5.0 3.0 3.0"
 
-gmx pdb2gmx -f ${inputPDBName} -o ${proteinName}_processed.gro -water tip3p
+gmap pdb2gmx -f ${inputPDBName} -o ${proteinName}_processed.gro -water tip3p
 
 #---crucial for smd and us. box size must be arranged for a system of interest.
 gmx editconf -f ${proteinName}_processed.gro \
