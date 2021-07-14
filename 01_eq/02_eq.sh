@@ -11,11 +11,8 @@ id=$1
 
 read -p "Proceed? Enter"
 
-echo "Making md inputs...(nvt.mdp and npt.mdp)"
-cat templates/nvt_eq.mdp | sed -e "s!#{RAND}!${RANDOM}!g" > nvt_eq_${id}.mdp
-cp  templates/npt_eq.mdp npt_eq_${id}.mdp
-
 echo "NVT equilibration runs are running..."
+cat templates/nvt_eq.mdp | sed -e "s!#{RAND}!${RANDOM}!g" > nvt_eq_${id}.mdp
 gmx grompp -f nvt_eq_${id}.mdp \
            -c em2.gro \
            -r em2.gro \
@@ -24,6 +21,7 @@ gmx grompp -f nvt_eq_${id}.mdp \
 gmx mdrun -deffnm nvt_eq_${id} #-ntmpi 1 -ntomp 6
 
 echo "NPT equilibration runs are running..."
+cp  templates/npt_eq.mdp npt_eq_${id}.mdp
 gmx grompp -f npt_eq_${id}.mdp \
            -c nvt_eq_${id}.gro \
            -r nvt_eq_${id}.gro \
